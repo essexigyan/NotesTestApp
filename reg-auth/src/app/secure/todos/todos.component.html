@@ -1,0 +1,31 @@
+<div class="add-todo-form text-center">
+    <h1>Add Notes</h1>
+<form [formGroup]="form" (submit)="submit()">
+	<div class="form-group">
+		<input type="text" formControlName="title" class="form-control input-lg" placeholder="Add Note Title.." >
+	</div>
+
+	<div class="form-group">
+		<input type="text" formControlName="todo" class="form-control input-lg" placeholder="Add Note..">
+	</div>
+
+	<button class="btn btn-lg btn-primary btn-block" routerLink="/secure/todos">CREATE</button>
+</form>   
+</div>
+
+<br><br><h1 style="text-align: center;">Notes List</h1><br>
+<hr>
+ <div class="row">
+  <div class="col-med-12" *ngFor="let todo of todos">
+    <div class="col-med-6 note">
+      <div class="card">
+          <button class="close">&times;</button>
+        <div class="card-block">
+          <h4 class="card-title">{{todo.title}}</h4>
+          <!--h6 class="card-subtitle mb-2 text-muted">{{note.date}}</h6-->
+          <p class="card-text">{{todo.todo}}</p>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
