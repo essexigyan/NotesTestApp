@@ -6,7 +6,8 @@
 	</div>
 
 	<div class="form-group">
-		<input type="text" formControlName="todo" class="form-control input-lg" placeholder="Add Note..">
+    <input type="text" formControlName="todo" class="form-control input-lg" placeholder="Add Note..">
+		<input type="hidden" formControlName="uid" value="{{UID}}" class="form-control">
 	</div>
 
 	<button class="btn btn-lg btn-primary btn-block" routerLink="/secure/todos">CREATE</button>
@@ -15,15 +16,15 @@
 
 <br><br><h1 style="text-align: center;">Notes List</h1><br>
 <hr>
- <div class="row">
+ <div class="row" *ngIf="todos">
   <div class="col-med-12" *ngFor="let todo of todos">
     <div class="col-med-6 note">
       <div class="card">
           <button class="close">&times;</button>
         <div class="card-block">
-          <h4 class="card-title">{{todo.title}}</h4>
-          <!--h6 class="card-subtitle mb-2 text-muted">{{note.date}}</h6-->
-          <p class="card-text">{{todo.todo}}</p>
+          <h4 class="card-title"*ngIf="todo && todo.title">{{todo.title}}</h4>
+          <h6 class="card-subtitle mb-2 text-muted"*ngIf="todo && todo.created_at">{{todo.created_at}}</h6>
+          <p class="card-text"*ngIf="todo && todo.todo">{{todo.todo}}</p>
         </div>
       </div>
     </div>

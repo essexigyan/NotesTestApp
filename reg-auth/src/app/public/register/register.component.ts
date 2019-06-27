@@ -44,7 +44,9 @@ form:FormGroup;
       (res) => {
      	this.router.navigate(['/user']);
       } ,
-      (err) => console.log(err)
+      (err) => {
+            this.router.navigate(['/login']);
+      }
    
   )
 }

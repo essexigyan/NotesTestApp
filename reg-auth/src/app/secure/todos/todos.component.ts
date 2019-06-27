@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RouterModule, Router} from '@angular/router';
+import { RouterModule, Router, ActivatedRoute} from '@angular/router';
 import { FormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -14,10 +14,25 @@ export class TodosComponent implements OnInit {
 todos;
 form:FormGroup;
 USER_URL   = "http://localhost:8000/todos/create";
+UID;
 
-  constructor(private http:HttpClient, private router:Router, private fb:FormBuilder) { }
+  constructor(private http:HttpClient, private router:Router, private fb:FormBuilder,private route: ActivatedRoute) {
+
+if(localStorage.getItem('uid')!=='undefined'){
+
+    const navigation = this.router.getCurrentNavigation();
+    localStorage.setItem('uid',navigation.extras.state['uid'])
+
+}
+   
+   
+   }
 
   ngOnInit() {
+  
+   this.UID = localStorage.getItem('uid');
+
+   console.log('TODOS--UID',this.UID);
 
  	const headers = new HttpHeaders({
  		'Authorization' : `Bearer ${localStorage.getItem('token')}`
@@ -31,7 +46,7 @@ USER_URL   = "http://localhost:8000/todos/create";
 
     });
 
-  	this.http.get(`http://localhost:8000/todos/${localStorage.getItem('uid')}`, {headers:headers}).subscribe(
+  	this.http.get(`http://localhost:8000/todos/${this.UID}`, {headers:headers}).subscribe(
   		(res)=>{
   			this.todos = res},
   		(err)=>{
@@ -47,7 +62,7 @@ USER_URL   = "http://localhost:8000/todos/create";
   	 const data = {
   	 	title	: 	formData.title,
   	 	todo	: 	formData.todo,
-  	 	user_id		: 	localStorage.getItem('uid'),
+  	 	user_id		: 	formData.uid,
   	 	created_at	: new Date(Date.now()).toLocaleString(),
   	 	client_id	: 		2,
   	 	client_secret: 		'SF8ACVdAvCHDCucyfUSmpz4l1TXTj2L54b8eenoG',

@@ -8,7 +8,7 @@
 	</ul>
 	<div class="navbar-nav">
 		<a class="nav-link" routerLink="/login" *ngIf="!loggedIn">LOGIN</a>
-		<a class="nav-link" routerLink="/login" *ngIf="loggedIn" (click)="logOut()">LOGOUT</a>
+		<a class="nav-link" routerLink="/" *ngIf="loggedIn" (click)="logOut()">LOGOUT</a>
 	</div>
 	
 </nav>

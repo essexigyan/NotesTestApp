@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-import { RouterModule, Router} from '@angular/router';
+import { RouterModule, Router, NavigationExtras} from '@angular/router';
 
 
 
@@ -23,7 +23,7 @@ form:FormGroup;
   constructor(private fb:FormBuilder, private http:HttpClient, private router:Router) { }
 
   ngOnInit() {
-
+      //localStorage.removeItem('uid');
   	  this.form = this.fb.group({
       email: [''],
       password: [''],
@@ -50,20 +50,21 @@ form:FormGroup;
      'Authorization' : `Bearer ${localStorage.getItem('token')}`
      })
 
-           this.http.post<any>(this.SERVER_URL,data,{headers:headers}).subscribe(
-      (res) => {
-        localStorage.setItem('token',res.access_token);
+      this.http.post<any>(this.SERVER_URL,data,{headers:headers}).subscribe(
+        (res) => {
 
-       this.http.get(this.USER_URL,{headers:headers}).subscribe(
-       (user) => {
+          localStorage.setItem('token',res.access_token);
 
-       this.USER = user;  
+           this.http.get(this.USER_URL,{headers:headers}).subscribe(
+        (user) => {
 
-      // console.log('FOOOOO',this.USER.id);
+           this.USER = user;  
+
+       console.log('FOOOOO--LOGIN',this.USER.id);
 
        localStorage.setItem('uid',this.USER.id);
 
-       this.router.navigate(['/secure/todos'])
+       this.router.navigate(['/secure/todos'],{ state: { uid: this.USER.id } });
      
       }),(err)=>{
 

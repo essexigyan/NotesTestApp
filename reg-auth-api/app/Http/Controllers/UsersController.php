@@ -41,7 +41,9 @@ class UsersController extends Controller
     	  	'password' 		=> Hash::make($request->password),
     	  ]);
 
-    	  return 'User added successfully!! Woo Hoo!';
+    	  $status = ['msg'=>'User Added Successfully'] ;
+
+          return true;
 
 
     }
