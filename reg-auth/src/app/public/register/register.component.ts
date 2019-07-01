@@ -42,7 +42,7 @@ form:FormGroup;
       
       this.http.post<any>(SERVER_URL,formData).subscribe(
       (res) => {
-     	this.router.navigate(['/user']);
+     	this.router.navigate(['/login']);
       } ,
       (err) => {
             this.router.navigate(['/login']);
