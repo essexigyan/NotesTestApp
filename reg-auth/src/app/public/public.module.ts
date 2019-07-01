@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 
 
 
+
 @NgModule({
   declarations: [
 
@@ -23,7 +24,8 @@ import { RegisterComponent } from './register/register.component';
      AppRoutingModule,
      FormsModule,
      ReactiveFormsModule,
-     HttpClientModule
+     HttpClientModule,
+
   ]
 })
 export class PublicModule { }

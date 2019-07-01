@@ -3,6 +3,8 @@ import { FormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { RouterModule, Router, NavigationExtras} from '@angular/router';
+import {UserService} from "../user.service";
+
 
 
 
@@ -17,23 +19,25 @@ form:FormGroup;
 
   SERVER_URL = "http://localhost:8000/oauth/token";
   USER_URL   = "http://localhost:8000/user";
-
   USER;
+  message:string;
 
-  constructor(private fb:FormBuilder, private http:HttpClient, private router:Router) { }
+  constructor(private fb:FormBuilder, private http:HttpClient, private router:Router, private userData:UserService) { }
 
   ngOnInit() {
-      //localStorage.removeItem('uid');
+
   	  this.form = this.fb.group({
       email: [''],
       password: [''],
 
     });
+
+      
   }
 
+
+
     submit(){
-    
-     //console.log(this.form.getRawValue());
 
      const formData = this.form.getRawValue();
 
@@ -46,7 +50,7 @@ form:FormGroup;
        scope:     '*'
      }
 
-     const headers = new HttpHeaders({
+      const headers = new HttpHeaders({
      'Authorization' : `Bearer ${localStorage.getItem('token')}`
      })
 
@@ -54,28 +58,40 @@ form:FormGroup;
         (res) => {
 
           localStorage.setItem('token',res.access_token);
+              
+          this.USER = this.getUser();
 
-           this.http.get(this.USER_URL,{headers:headers}).subscribe(
+              //this.userData.currentMessage.subscribe(message => this.message = this.USER)
+         },
+         (err) => {
+
+         })
+
+   }
+
+   //Better way to handle get and setting user uid.
+
+   getUser(){
+     const headers = new HttpHeaders({'Authorization' : `Bearer ${localStorage.getItem('token')}`})
+
+     this.http.get(this.USER_URL,{headers:headers}).subscribe(
         (user) => {
 
-           this.USER = user;  
+       this.USER = user;
+       //console.log('FOOOOO--BEFORE',this.USER.id);
 
-       console.log('FOOOOO--LOGIN',this.USER.id);
-
+       if(localStorage.getItem('uid')!==null){
+         localStorage.setItem('uid',this.USER.id);
+       }
+       
+       //console.log('FOOOOO--AFTER',this.USER.id);
+   
        localStorage.setItem('uid',this.USER.id);
-
-       this.router.navigate(['/secure/todos'],{ state: { uid: this.USER.id } });
+       this.router.navigate(['/secure/todos']);
      
       }),(err)=>{
 
-       };
-   },
-   (err) => {
-
-   })
-      
-      
-
+       }
    }
 
 
